@@ -3,7 +3,7 @@ This is the repository of Team_3554 of Innovation Marathon of CodeUnnati Foundat
 Project Title is "Title: Safe Overtaking System: A Networked Camera Solution for Improved Driver Safety".
 
 
-============================    Follow procedures to oprate system  ============================
+============================    Follow procedures to operate system  ============================
 
 Pre requisite:
     Libraries to be Installed: 
