@@ -1,6 +1,6 @@
 # Team_3554-CodeUnnati-Innovation-Marathon
 This is the repository of Team_3554 of Innovation Marathon of CodeUnnati Foundation supported by SAP India. 
-Project Title is "Title: Safe Overtaking System: A Networked Camera Solution for Improved Driver Safety".
+Project Title is "Title: Safe Overtaking System: A Networked Camera Solution for Improved Road Safety".
 
 
 ============================    Follow procedures to operate system  ============================
