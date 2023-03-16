@@ -6,7 +6,7 @@ Project Title is "Title: Safe Overtaking System: A Networked Camera Solution for
 ============================    Follow procedures to oprate system  ============================
 
 Pre requisite:
-    Librerys to be Insatlled: 
+    Libraries to be Installed: 
         RPi.GPIO
         Socket
         OpenCV
