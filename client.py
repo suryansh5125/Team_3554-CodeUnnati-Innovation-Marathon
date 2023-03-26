@@ -1,7 +1,7 @@
 import socket,cv2, pickle, struct, time		
-import RPi.GPIO as GPIO			#library to work with GPIO pins of Raspberry PI
+import RPi.GPIO as GPIO			#library to work with GPIO pins of Respberry PI
 
-GPIO.setmode(GPIO.BCM)			#Configure Raspberry PI PINS in Broadcom chip-specific pin numbers
+GPIO.setmode(GPIO.BCM)			#Configure Respberry PI PINS in Broadcom chip-specific pin numbers
 GPIO.setwarnings(False)
 
 data = b""
@@ -13,8 +13,9 @@ Echo = 24		#Echo pin of UltraSonic Sensor
 dis_cnt = 0
 dis_cnt_threshold = 3		#to set Connect Time Threshold
 disconnect_cnt = 0
-disconnect_cnt_threshold = 20		#to set Dis-Connect Time Threshold
-dis = 0				#Distance between vehicles
+disconnect_cnt_threshold = 2		#to set Dis-Connect Time Threshold
+dis = 0				#Distance btw vehicles
+temp = 0
 
 print("\n Sensor is acivated")
 GPIO.setup(Trig, GPIO.OUT)
@@ -42,7 +43,7 @@ def getDis(delay):				#to calculate Distance by UltraSonic Sensor
 # FPS = 0
 
 # create socket
-host_ip = '10.42.0.1'   #paste your server ip address here
+host_ip = '10.42.0.1' # paste your server ip address here
 port = 9999			#paste  your server Host Port here
 
 while True:
@@ -65,10 +66,16 @@ while True:
 	data = b""
 
 	while True:
-		dis = getDis(0.001)			#get Distance with delay of 0.001 sec
-		if not 0.1<dis<30:				#count upto Dis-Connect Threshold if distance does not maintained within rage
-			disconnect_cnt += 1
-			#print("Distance : ", dis, "      dis_cnt : ", disconnect_cnt)
+		if temp == 20:
+			dis = getDis(0.01)			#get Distance with delay of 0.001 sec
+			temp = 0
+			
+			if not 0.1<dis<30:				#count upto Dis-Connect Threshold if distance does not maintained within rage
+				disconnect_cnt += 1
+				#print("Distance : ", dis, "      dis_cnt : ", disconnect_cnt)
+		else:
+			temp += 1
+			
 			
 		if disconnect_cnt == disconnect_cnt_threshold:
 			disconnect_cnt = 0
@@ -119,8 +126,14 @@ while True:
 
 			cv2.namedWindow("Receiving Video",cv2.WINDOW_NORMAL)
 			cv2.setWindowProperty("Receiving Video",cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-			cv2.imshow("Receiving Video",frame)			#displays frame
-			
+			try:
+				cv2.imshow("Receiving Video",frame)			#displays frame
+			except:
+				disconnect_cnt = 0
+				print("Disconnected...")		
+				client_socket.close()			#disconnect Client Socket
+				cv2.destroyAllWindows()			#closes all windows
+				break
 			
 			if cv2.waitKey(1) & 0xFF == ord('q'):
 				client_socket.close()		#close client socket when key 'Q' pressed
